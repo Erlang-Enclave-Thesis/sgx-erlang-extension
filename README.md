@@ -12,5 +12,5 @@ Intel NUC7PJYH with SGX2 hardware support using the DCAP 1.5 driver.
 
 Ubuntu 18.04, SGX SDK 2.9.1, Erlang/OTP 23, GCC/G++ 10.1.0-2
 
-**Note:** Parts of erl\_interface was deprecated with the release of Erlang/OTP 23 which therefore does not support the C Node prototype, everything else works fine with this release however.
+**Note:** Parts of erl\_interface were deprecated with the release of Erlang/OTP 23 which therefore does not support the C Node prototype, everything else works fine with this release however.
 
