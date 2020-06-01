@@ -124,7 +124,7 @@ erl
 c(enclave_communicator).
 enclave_communicator:eval_rsa().
 enclave_communicator:eval_increment().
-`
+```
 
 
 ## No SGX
@@ -135,6 +135,6 @@ erl
 c(enclave_communicator).
 enclave_communicator:eval_rsa().
 enclave_communicator:eval_increment().
-`
+```
 
 
