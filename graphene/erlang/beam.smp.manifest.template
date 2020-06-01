@@ -1,0 +1,285 @@
+# Nginx manifest example
+#
+# This manifest was prepared and tested on Ubuntu 16.04.
+#
+# Nginx must be run with the pal_loader:
+#
+# ./pal_loader nginx.manifest -c conf/nginx-graphene.conf
+
+# The executable to load in Graphene.
+loader.exec = file:$(INSTALL_DIR)/lib/erlang/erts-11.0/bin/beam.smp
+loader.execname = beam.smp
+
+# Graphene environment, including the path to the library OS and the debug
+# option (inline/none).
+loader.preload = file:$(GRAPHENEDIR)/Runtime/libsysdb.so
+loader.debug_type = $(GRAPHENEDEBUG)
+
+# Environment variables
+loader.env.LD_LIBRARY_PATH = /lib:/lib/x86_64-linux-gnu
+
+# Erlang Environment Variables (unsure if needed on beam.smp)
+loader.env.ROOTDIR = $(INSTALL_DIR)/lib/erlang
+loader.env.BINDIR = $(INSTALL_DIR)/lib/erlang/erts-11.0/bin
+loader.env.EMU = beam
+
+# Mounted FSes. The following "chroot" FSes mount a part of the host FS into the
+# guest. Other parts of the host FS will not be available in the guest.
+
+# Default glibc files, mounted from the Runtime directory in GRAPHENEDIR.
+fs.mount.lib.type = chroot
+fs.mount.lib.path = /lib
+fs.mount.lib.uri = file:$(GRAPHENEDIR)/Runtime
+
+# Host-level libraries (/lib/x86_64-linux-gnu) required by Erlang.
+fs.mount.lib2.type = chroot
+fs.mount.lib2.path = /lib/x86_64-linux-gnu
+fs.mount.lib2.uri = file:/lib/x86_64-linux-gnu
+
+# Host-level directory to NSS files required by Glibc + NSS libs.
+fs.mount.etc.type = chroot
+fs.mount.etc.path = /etc
+fs.mount.etc.uri = file:/etc
+
+# Mount the current working directory
+fs.mount.cwd.type = chroot
+fs.mount.cwd.path = $(INSTALL_DIR_ABSPATH)
+fs.mount.cwd.uri = file:$(INSTALL_DIR)
+
+# SGX general options
+
+# Set the virtual memory size of the SGX enclave. For SGX v1, the enclave
+# size must be specified during signing. If Nginx needs more virtual memory
+# than the enclave size, Graphene will not be able to allocate it.
+sgx.enclave_size = 256M
+#sgx.enclave_size = 2G
+
+# Set the maximum number of enclave threads. For SGX v1, the number of enclave
+# TCSes must be specified during signing, so the application cannot use more
+# threads than the number of TCSes. Note that Graphene also creates an internal
+# thread for handling inter-process communication (IPC), and potentially another
+# thread for asynchronous events. Therefore, the actual number of threads that
+# the application can create is (sgx.thread_num - 2).
+#
+# We (somewhat arbitrarily) specify 4 threads since Nginx is single-threaded.
+sgx.thread_num = 32
+
+sgx.allowed_files.erl_crash_dump = file:./erl_crash.dump
+
+# SGX trusted libraries
+
+# Glibc libraries
+sgx.trusted_files.ld = file:$(GRAPHENEDIR)/Runtime/ld-linux-x86-64.so.2
+sgx.trusted_files.libc = file:$(GRAPHENEDIR)/Runtime/libc.so.6
+sgx.trusted_files.libm = file:$(GRAPHENEDIR)/Runtime/libm.so.6
+sgx.trusted_files.libdl = file:$(GRAPHENEDIR)/Runtime/libdl.so.2
+sgx.trusted_files.librt = file:$(GRAPHENEDIR)/Runtime/librt.so.1
+sgx.trusted_files.libutil = file:$(GRAPHENEDIR)/Runtime/libutil.so.1
+sgx.trusted_files.libpthread = file:$(GRAPHENEDIR)/Runtime/libpthread.so.0
+
+# Name Service Switch (NSS) libraries (Glibc dependencies)
+#sgx.trusted_files.libnsscompat = file:/lib/x86_64-linux-gnu/libnss_compat.so.2
+#sgx.trusted_files.libnssfiles = file:/lib/x86_64-linux-gnu/libnss_files.so.2
+#sgx.trusted_files.libnssnis = file:/lib/x86_64-linux-gnu/libnss_nis.so.2
+
+# libNSL is a dependency of libnss_compat above
+#sgx.trusted_files.libnsl = file:/lib/x86_64-linux-gnu/libnsl.so.1
+
+# Erlang dependencies (shared libraries)
+$(ERLANG_TRUSTED_LIBS)
+
+# Erlang required files (trusted)
+sgx.trusted_files.start_boot = file:$(INSTALL_DIR)/lib/erlang/bin/start.boot
+
+sgx.trusted_files.erl_child_setup = file:install/lib/erlang/erts-11.0/bin/erl_child_setup
+sgx.trusted_children.erl_child_setup = file:./erl_child_setup.sig
+
+# KERNEL EBIN BEAMS
+sgx.trusted_files.application = file:install/lib/erlang/lib/kernel-7.0/ebin/application.beam
+sgx.trusted_files.application_controller = file:install/lib/erlang/lib/kernel-7.0/ebin/application_controller.beam
+sgx.trusted_files.application_master = file:install/lib/erlang/lib/kernel-7.0/ebin/application_master.beam
+sgx.trusted_files.application_starter = file:install/lib/erlang/lib/kernel-7.0/ebin/application_starter.beam
+sgx.trusted_files.auth = file:install/lib/erlang/lib/kernel-7.0/ebin/auth.beam
+sgx.trusted_files.code = file:install/lib/erlang/lib/kernel-7.0/ebin/code.beam
+sgx.trusted_files.code_server = file:install/lib/erlang/lib/kernel-7.0/ebin/code_server.beam
+sgx.trusted_files.disk_log_1 = file:install/lib/erlang/lib/kernel-7.0/ebin/disk_log_1.beam
+sgx.trusted_files.disk_log = file:install/lib/erlang/lib/kernel-7.0/ebin/disk_log.beam
+sgx.trusted_files.disk_log_server = file:install/lib/erlang/lib/kernel-7.0/ebin/disk_log_server.beam
+sgx.trusted_files.disk_log_sup = file:install/lib/erlang/lib/kernel-7.0/ebin/disk_log_sup.beam
+sgx.trusted_files.dist_ac = file:install/lib/erlang/lib/kernel-7.0/ebin/dist_ac.beam
+sgx.trusted_files.dist_util = file:install/lib/erlang/lib/kernel-7.0/ebin/dist_util.beam
+sgx.trusted_files.erl_boot_server = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_boot_server.beam
+sgx.trusted_files.erl_compile_server = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_compile_server.beam
+sgx.trusted_files.erl_ddll = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_ddll.beam
+sgx.trusted_files.erl_distribution = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_distribution.beam
+sgx.trusted_files.erl_epmd = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_epmd.beam
+sgx.trusted_files.erl_reply = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_reply.beam
+sgx.trusted_files.erl_signal_handler = file:install/lib/erlang/lib/kernel-7.0/ebin/erl_signal_handler.beam
+sgx.trusted_files.error_handler = file:install/lib/erlang/lib/kernel-7.0/ebin/error_handler.beam
+sgx.trusted_files.error_logger = file:install/lib/erlang/lib/kernel-7.0/ebin/error_logger.beam
+sgx.trusted_files.erts_debug = file:install/lib/erlang/lib/kernel-7.0/ebin/erts_debug.beam
+sgx.trusted_files.file = file:install/lib/erlang/lib/kernel-7.0/ebin/file.beam
+sgx.trusted_files.file_io_server = file:install/lib/erlang/lib/kernel-7.0/ebin/file_io_server.beam
+sgx.trusted_files.file_server = file:install/lib/erlang/lib/kernel-7.0/ebin/file_server.beam
+sgx.trusted_files.gen_sctp = file:install/lib/erlang/lib/kernel-7.0/ebin/gen_sctp.beam
+sgx.trusted_files.gen_tcp = file:install/lib/erlang/lib/kernel-7.0/ebin/gen_tcp.beam
+sgx.trusted_files.gen_udp = file:install/lib/erlang/lib/kernel-7.0/ebin/gen_udp.beam
+sgx.trusted_files.global = file:install/lib/erlang/lib/kernel-7.0/ebin/global.beam
+sgx.trusted_files.global_group = file:install/lib/erlang/lib/kernel-7.0/ebin/global_group.beam
+sgx.trusted_files.global_search = file:install/lib/erlang/lib/kernel-7.0/ebin/global_search.beam
+sgx.trusted_files.group = file:install/lib/erlang/lib/kernel-7.0/ebin/group.beam
+sgx.trusted_files.group_history = file:install/lib/erlang/lib/kernel-7.0/ebin/group_history.beam
+sgx.trusted_files.heart = file:install/lib/erlang/lib/kernel-7.0/ebin/heart.beam
+sgx.trusted_files.hipe_unified_loader = file:install/lib/erlang/lib/kernel-7.0/ebin/hipe_unified_loader.beam
+sgx.trusted_files.inet6_sctp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet6_sctp.beam
+sgx.trusted_files.inet6_tcp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet6_tcp.beam
+sgx.trusted_files.inet6_tcp_dist = file:install/lib/erlang/lib/kernel-7.0/ebin/inet6_tcp_dist.beam
+sgx.trusted_files.inet6_udp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet6_udp.beam
+sgx.trusted_files.inet = file:install/lib/erlang/lib/kernel-7.0/ebin/inet.beam
+sgx.trusted_files.inet_config = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_config.beam
+sgx.trusted_files.inet_db = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_db.beam
+sgx.trusted_files.inet_dns = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_dns.beam
+sgx.trusted_files.inet_gethost_native = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_gethost_native.beam
+sgx.trusted_files.inet_hosts = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_hosts.beam
+sgx.trusted_files.inet_parse = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_parse.beam
+sgx.trusted_files.inet_res = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_res.beam
+sgx.trusted_files.inet_sctp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_sctp.beam
+sgx.trusted_files.inet_tcp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_tcp.beam
+sgx.trusted_files.inet_tcp_dist = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_tcp_dist.beam
+sgx.trusted_files.inet_udp = file:install/lib/erlang/lib/kernel-7.0/ebin/inet_udp.beam
+sgx.trusted_files.kernel = file:install/lib/erlang/lib/kernel-7.0/ebin/kernel.beam
+sgx.trusted_files.kernel_config = file:install/lib/erlang/lib/kernel-7.0/ebin/kernel_config.beam
+sgx.trusted_files.kernel_refc = file:install/lib/erlang/lib/kernel-7.0/ebin/kernel_refc.beam
+sgx.trusted_files.local_tcp = file:install/lib/erlang/lib/kernel-7.0/ebin/local_tcp.beam
+sgx.trusted_files.local_udp = file:install/lib/erlang/lib/kernel-7.0/ebin/local_udp.beam
+sgx.trusted_files.logger_backend = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_backend.beam
+sgx.trusted_files.logger = file:install/lib/erlang/lib/kernel-7.0/ebin/logger.beam
+sgx.trusted_files.logger_config = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_config.beam
+sgx.trusted_files.logger_disk_log_h = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_disk_log_h.beam
+sgx.trusted_files.logger_filters = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_filters.beam
+sgx.trusted_files.logger_formatter = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_formatter.beam
+sgx.trusted_files.logger_handler_watcher = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_handler_watcher.beam
+sgx.trusted_files.logger_h_common = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_h_common.beam
+sgx.trusted_files.logger_olp = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_olp.beam
+sgx.trusted_files.logger_proxy = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_proxy.beam
+sgx.trusted_files.logger_server = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_server.beam
+sgx.trusted_files.logger_simple_h = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_simple_h.beam
+sgx.trusted_files.logger_std_h = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_std_h.beam
+sgx.trusted_files.logger_sup = file:install/lib/erlang/lib/kernel-7.0/ebin/logger_sup.beam
+sgx.trusted_files.net_adm = file:install/lib/erlang/lib/kernel-7.0/ebin/net_adm.beam
+sgx.trusted_files.net = file:install/lib/erlang/lib/kernel-7.0/ebin/net.beam
+sgx.trusted_files.net_kernel = file:install/lib/erlang/lib/kernel-7.0/ebin/net_kernel.beam
+sgx.trusted_files.os = file:install/lib/erlang/lib/kernel-7.0/ebin/os.beam
+sgx.trusted_files.pg2 = file:install/lib/erlang/lib/kernel-7.0/ebin/pg2.beam
+sgx.trusted_files.ram_file = file:install/lib/erlang/lib/kernel-7.0/ebin/ram_file.beam
+sgx.trusted_files.raw_file_io = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io.beam
+sgx.trusted_files.raw_file_io_compressed = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_compressed.beam
+sgx.trusted_files.raw_file_io_deflate = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_deflate.beam
+sgx.trusted_files.raw_file_io_delayed = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_delayed.beam
+sgx.trusted_files.raw_file_io_inflate = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_inflate.beam
+sgx.trusted_files.raw_file_io_list = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_list.beam
+sgx.trusted_files.raw_file_io_raw = file:install/lib/erlang/lib/kernel-7.0/ebin/raw_file_io_raw.beam
+sgx.trusted_files.rpc = file:install/lib/erlang/lib/kernel-7.0/ebin/rpc.beam
+sgx.trusted_files.seq_trace = file:install/lib/erlang/lib/kernel-7.0/ebin/seq_trace.beam
+sgx.trusted_files.standard_error = file:install/lib/erlang/lib/kernel-7.0/ebin/standard_error.beam
+sgx.trusted_files.user = file:install/lib/erlang/lib/kernel-7.0/ebin/user.beam
+sgx.trusted_files.user_drv = file:install/lib/erlang/lib/kernel-7.0/ebin/user_drv.beam
+sgx.trusted_files.user_sup = file:install/lib/erlang/lib/kernel-7.0/ebin/user_sup.beam
+sgx.trusted_files.wrap_log_reader = file:install/lib/erlang/lib/kernel-7.0/ebin/wrap_log_reader.beam
+
+# STDLIB EBIN BEAMS
+sgx.trusted_files.array = file:install/lib/erlang/lib/stdlib-3.13/ebin/array.beam
+sgx.trusted_files.base64 = file:install/lib/erlang/lib/stdlib-3.13/ebin/base64.beam
+sgx.trusted_files.beam_lib = file:install/lib/erlang/lib/stdlib-3.13/ebin/beam_lib.beam
+sgx.trusted_files.binary = file:install/lib/erlang/lib/stdlib-3.13/ebin/binary.beam
+sgx.trusted_files.calendar = file:install/lib/erlang/lib/stdlib-3.13/ebin/calendar.beam
+sgx.trusted_files.c = file:install/lib/erlang/lib/stdlib-3.13/ebin/c.beam
+sgx.trusted_files.dets = file:install/lib/erlang/lib/stdlib-3.13/ebin/dets.beam
+sgx.trusted_files.dets_server = file:install/lib/erlang/lib/stdlib-3.13/ebin/dets_server.beam
+sgx.trusted_files.dets_sup = file:install/lib/erlang/lib/stdlib-3.13/ebin/dets_sup.beam
+sgx.trusted_files.dets_utils = file:install/lib/erlang/lib/stdlib-3.13/ebin/dets_utils.beam
+sgx.trusted_files.dets_v9 = file:install/lib/erlang/lib/stdlib-3.13/ebin/dets_v9.beam
+sgx.trusted_files.dict = file:install/lib/erlang/lib/stdlib-3.13/ebin/dict.beam
+sgx.trusted_files.digraph = file:install/lib/erlang/lib/stdlib-3.13/ebin/digraph.beam
+sgx.trusted_files.digraph_utils = file:install/lib/erlang/lib/stdlib-3.13/ebin/digraph_utils.beam
+sgx.trusted_files.edlin = file:install/lib/erlang/lib/stdlib-3.13/ebin/edlin.beam
+sgx.trusted_files.edlin_expand = file:install/lib/erlang/lib/stdlib-3.13/ebin/edlin_expand.beam
+sgx.trusted_files.epp = file:install/lib/erlang/lib/stdlib-3.13/ebin/epp.beam
+sgx.trusted_files.erl_abstract_code = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_abstract_code.beam
+sgx.trusted_files.erl_anno = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_anno.beam
+sgx.trusted_files.erl_bits = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_bits.beam
+sgx.trusted_files.erl_compile = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_compile.beam
+sgx.trusted_files.erl_error = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_error.beam
+sgx.trusted_files.erl_eval = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_eval.beam
+sgx.trusted_files.erl_expand_records = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_expand_records.beam
+sgx.trusted_files.erl_internal = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_internal.beam
+sgx.trusted_files.erl_lint = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_lint.beam
+sgx.trusted_files.erl_parse = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_parse.beam
+sgx.trusted_files.erl_posix_msg = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_posix_msg.beam
+sgx.trusted_files.erl_pp = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_pp.beam
+sgx.trusted_files.erl_scan = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_scan.beam
+sgx.trusted_files.erl_tar = file:install/lib/erlang/lib/stdlib-3.13/ebin/erl_tar.beam
+sgx.trusted_files.error_logger_file_h = file:install/lib/erlang/lib/stdlib-3.13/ebin/error_logger_file_h.beam
+sgx.trusted_files.error_logger_tty_h = file:install/lib/erlang/lib/stdlib-3.13/ebin/error_logger_tty_h.beam
+sgx.trusted_files.escript = file:install/lib/erlang/lib/stdlib-3.13/ebin/escript.beam
+sgx.trusted_files.ets = file:install/lib/erlang/lib/stdlib-3.13/ebin/ets.beam
+sgx.trusted_files.eval_bits = file:install/lib/erlang/lib/stdlib-3.13/ebin/eval_bits.beam
+sgx.trusted_files.filelib = file:install/lib/erlang/lib/stdlib-3.13/ebin/filelib.beam
+sgx.trusted_files.filename = file:install/lib/erlang/lib/stdlib-3.13/ebin/filename.beam
+sgx.trusted_files.file_sorter = file:install/lib/erlang/lib/stdlib-3.13/ebin/file_sorter.beam
+sgx.trusted_files.gb_sets = file:install/lib/erlang/lib/stdlib-3.13/ebin/gb_sets.beam
+sgx.trusted_files.gb_trees = file:install/lib/erlang/lib/stdlib-3.13/ebin/gb_trees.beam
+sgx.trusted_files.gen = file:install/lib/erlang/lib/stdlib-3.13/ebin/gen.beam
+sgx.trusted_files.gen_event = file:install/lib/erlang/lib/stdlib-3.13/ebin/gen_event.beam
+sgx.trusted_files.gen_fsm = file:install/lib/erlang/lib/stdlib-3.13/ebin/gen_fsm.beam
+sgx.trusted_files.gen_server = file:install/lib/erlang/lib/stdlib-3.13/ebin/gen_server.beam
+sgx.trusted_files.gen_statem = file:install/lib/erlang/lib/stdlib-3.13/ebin/gen_statem.beam
+sgx.trusted_files.io = file:install/lib/erlang/lib/stdlib-3.13/ebin/io.beam
+sgx.trusted_files.io_lib = file:install/lib/erlang/lib/stdlib-3.13/ebin/io_lib.beam
+sgx.trusted_files.io_lib_format = file:install/lib/erlang/lib/stdlib-3.13/ebin/io_lib_format.beam
+sgx.trusted_files.io_lib_fread = file:install/lib/erlang/lib/stdlib-3.13/ebin/io_lib_fread.beam
+sgx.trusted_files.io_lib_pretty = file:install/lib/erlang/lib/stdlib-3.13/ebin/io_lib_pretty.beam
+sgx.trusted_files.lists = file:install/lib/erlang/lib/stdlib-3.13/ebin/lists.beam
+sgx.trusted_files.log_mf_h = file:install/lib/erlang/lib/stdlib-3.13/ebin/log_mf_h.beam
+sgx.trusted_files.maps = file:install/lib/erlang/lib/stdlib-3.13/ebin/maps.beam
+sgx.trusted_files.math = file:install/lib/erlang/lib/stdlib-3.13/ebin/math.beam
+sgx.trusted_files.ms_transform = file:install/lib/erlang/lib/stdlib-3.13/ebin/ms_transform.beam
+sgx.trusted_files.orddict = file:install/lib/erlang/lib/stdlib-3.13/ebin/orddict.beam
+sgx.trusted_files.ordsets = file:install/lib/erlang/lib/stdlib-3.13/ebin/ordsets.beam
+sgx.trusted_files.otp_internal = file:install/lib/erlang/lib/stdlib-3.13/ebin/otp_internal.beam
+sgx.trusted_files.pool = file:install/lib/erlang/lib/stdlib-3.13/ebin/pool.beam
+sgx.trusted_files.proc_lib = file:install/lib/erlang/lib/stdlib-3.13/ebin/proc_lib.beam
+sgx.trusted_files.proplists = file:install/lib/erlang/lib/stdlib-3.13/ebin/proplists.beam
+sgx.trusted_files.qlc = file:install/lib/erlang/lib/stdlib-3.13/ebin/qlc.beam
+sgx.trusted_files.qlc_pt = file:install/lib/erlang/lib/stdlib-3.13/ebin/qlc_pt.beam
+sgx.trusted_files.queue = file:install/lib/erlang/lib/stdlib-3.13/ebin/queue.beam
+sgx.trusted_files.rand = file:install/lib/erlang/lib/stdlib-3.13/ebin/rand.beam
+sgx.trusted_files.random = file:install/lib/erlang/lib/stdlib-3.13/ebin/random.beam
+sgx.trusted_files.re = file:install/lib/erlang/lib/stdlib-3.13/ebin/re.beam
+sgx.trusted_files.sets = file:install/lib/erlang/lib/stdlib-3.13/ebin/sets.beam
+sgx.trusted_files.shell = file:install/lib/erlang/lib/stdlib-3.13/ebin/shell.beam
+sgx.trusted_files.shell_default = file:install/lib/erlang/lib/stdlib-3.13/ebin/shell_default.beam
+sgx.trusted_files.slave = file:install/lib/erlang/lib/stdlib-3.13/ebin/slave.beam
+sgx.trusted_files.sofs = file:install/lib/erlang/lib/stdlib-3.13/ebin/sofs.beam
+sgx.trusted_files.string = file:install/lib/erlang/lib/stdlib-3.13/ebin/string.beam
+sgx.trusted_files.supervisor = file:install/lib/erlang/lib/stdlib-3.13/ebin/supervisor.beam
+sgx.trusted_files.supervisor_bridge = file:install/lib/erlang/lib/stdlib-3.13/ebin/supervisor_bridge.beam
+sgx.trusted_files.sys = file:install/lib/erlang/lib/stdlib-3.13/ebin/sys.beam
+sgx.trusted_files.timer = file:install/lib/erlang/lib/stdlib-3.13/ebin/timer.beam
+sgx.trusted_files.unicode = file:install/lib/erlang/lib/stdlib-3.13/ebin/unicode.beam
+sgx.trusted_files.unicode_util = file:install/lib/erlang/lib/stdlib-3.13/ebin/unicode_util.beam
+sgx.trusted_files.uri_string = file:install/lib/erlang/lib/stdlib-3.13/ebin/uri_string.beam
+sgx.trusted_files.win32reg = file:install/lib/erlang/lib/stdlib-3.13/ebin/win32reg.beam
+sgx.trusted_files.zip = file:install/lib/erlang/lib/stdlib-3.13/ebin/zip.beam
+
+
+
+#sgx.trusted_files.beam_smp = file:$(INSTALL_DIR)/lib/erlang/erts-11.0/bin/beam.smp
+#sgx.trusted_files.conf2 = file:$(INSTALL_DIR)/conf/mime.types
+
+# Name Service Switch (NSS) files (Glibc reads these files)
+#sgx.allowed_files.nsswitch = file:/etc/nsswitch.conf
+#sgx.allowed_files.ethers = file:/etc/ethers
+#sgx.allowed_files.hosts = file:/etc/hosts
+#sgx.allowed_files.group = file:/etc/group
+#sgx.allowed_files.passwd = file:/etc/passwd

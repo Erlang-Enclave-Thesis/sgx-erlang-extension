@@ -1,0 +1,172 @@
+---
+title: "Run time comparison between SGX protected and regular C process from Erlang NIF and C Node"
+output:
+   pdf_document
+---
+
+# Setup
+
+Ubuntu 18.04, NUC7PJYH, DCAP 1.4 driver, SGX SDK 2.9.1
+
+Erlang/OTP 20 [erts-9.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:10] [kernel-poll:false]
+
+Eshell V9.2
+
+Pre-compiled Erlang from Ubuntu repository.
+
+GCC / G++  7.5.0-3
+
+## Execution
+
+SGX versions are located directly in the root of the repo (erlang-c-node, erlang-nif), while the non-SGX versions are to be found in without-sgx/.
+
+```
+erl -sname e1 -setcookie "Very Secret Cookie"
+c(enclave_communicator).
+enclave_communicator:run_tests().
+```
+
+This function performs a simple (time) evaluation of calling C code in Erlang with C Node and NIF.
+In the background timer:tc is used in Erlang to measure time.
+
+# C NODE
+
+## Equivalent functionality without any SGX use
+```
+cd sgx-erlang-extension/without-sgx/erlang-c-node
+make SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 538.4 microseconds
+Average time excluding first element: 76.24137931034483 microseconds
+Raw data: [13941,88,85,84,84,84,89,84,85,84,85,91,71,71,
+		71,71,70,72,70,70,70,70,70,70,72,70,70,70,70,70]
+
+Calling return, 30 times
+Average time: 76.16666666666667 microseconds
+Average time excluding first element: 75.24137931034483 microseconds
+Raw data: [103,93,91,91,91,96,91,71,70,70,70,70,70,71,71,
+		70,70,72,71,71,70,70,71,71,71,70,76,71,71,71]
+```
+
+## Hardware mode (release)
+```
+cd sgx-erlang-extension/erlang-c-node
+make SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 612.5 microseconds
+Average time excluding first element: 104.48275862068965 microseconds
+Raw data: [15345,157,149,145,142,144,143,165,143,118,110,109,110,
+		146,143,117,103,67,66,67,66,70,66,66,69,68,70,70,71,70]
+
+Calling return, 30 times
+Average time: 67.5 microseconds
+Average time excluding first element: 67.27586206896552 microseconds
+Raw data: [74,67,82,71,71,66,69,65,66,70,71,66,65,65,
+		65,65,69,66,65,65,65,65,71,66,66,65,65,69,65,65]
+```
+## Hardware mode (debug)
+```
+cd sgx-erlang-extension/erlang-c-node
+make SGX_DEBUG=1
+
+Calling increment, 30 times
+Average time: 578.8666666666667 microseconds
+Average time excluding first element: 112.27586206896552 microseconds
+Raw data: [14110,117,104,103,102,108,102,105,199,154,147,125,137,105,
+		102,102,102,106,102,102,101,119,102,102,101,102,101,101,102,101]
+
+Calling return, 30 times
+Average time: 102.56666666666666 microseconds
+Average time excluding first element: 102.20689655172414 microseconds
+Raw data: [113,103,108,102,101,102,102,102,101,101,102,101,102,101,101,
+		102,102,102,102,101,103,102,101,101,111,103,101,101,101,102]
+```
+## Simulation mode (release)
+```
+cd sgx-erlang-extension/erlang-c-node
+make SGX_MODE=SIM SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 564.9333333333333 microseconds
+Average time excluding first element: 111.13793103448276 microseconds
+Raw data: [13725,129,124,124,122,123,122,122,123,123,109,109,101,133,130,
+		109,101,104,101,101,101,101,101,101,101,101,102,103,101,101]
+
+Calling return, 30 times
+Average time: 101.83333333333333 microseconds
+Average time excluding first element: 101.65517241379311 microseconds
+Raw data: [107,103,102,101,101,101,101,103,101,101,101,101,101,101,101,
+		101,115,101,101,100,101,102,101,101,101,101,101,101,101,101]
+```
+
+# NIF
+## Equivalent functionality without any SGX use
+```
+cd sgx-erlang-extension/without-sgx/erlang-nif
+make SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 0.13333333333333333 microseconds
+Average time excluding first element: 0.0 microseconds
+Raw data: [4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+Calling rtrn, 30 times
+Average time: 0.06666666666666667 microseconds
+Average time excluding first element: 0.0 microseconds
+Raw data: [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+```
+
+## Hardware mode (release)
+```
+cd sgx-erlang-extension/erlang-nif
+make SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 31.5 microseconds
+Average time excluding first element: 28.06896551724138 microseconds
+Raw data: [131,29,28,28,28,28,28,26,27,28,28,28,28,28,28,28,28,28,28,28,28,30,
+           28,28,28,30,28,28,28,28]
+
+Calling rtrn, 30 times
+Average time: 28.0 microseconds
+Average time excluding first element: 27.862068965517242 microseconds
+Raw data: [32,28,28,28,28,27,27,29,28,27,27,28,28,28,27,28,28,28,28,28,28,28,
+           28,30,27,27,28,28,28,28]
+```
+## Hardware mode (debug)
+```
+cd sgx-erlang-extension/erlang-nif
+make SGX_DEBUG=1
+
+Calling increment, 30 times
+Average time: 30.866666666666667 microseconds
+Average time excluding first element: 27.75862068965517 microseconds
+Raw data: [121,29,28,28,28,27,28,28,27,28,27,27,28,28,28,27,28,28,27,28,28,29,
+           28,27,27,28,28,28,28,27]
+
+Calling rtrn, 30 times
+Average time: 27.8 microseconds
+Average time excluding first element: 27.655172413793103 microseconds
+Raw data: [32,28,28,28,27,27,27,27,27,27,28,28,27,28,27,28,28,28,28,28,28,28,
+           28,28,28,27,28,28,27,28]
+```
+## Simulation mode (release)
+```
+cd sgx-erlang-extension/erlang-nif
+make SGX_MODE=SIM SGX_DEBUG=0
+
+Calling increment, 30 times
+Average time: 22.433333333333334 microseconds
+Average time excluding first element: 19.689655172413794 microseconds
+Raw data: [102,18,17,17,17,17,16,16,17,17,17,17,16,16,100,18,17,16,17,17,16,
+           19,17,16,17,16,18,16,16,17]
+
+Calling rtrn, 30 times
+Average time: 16.633333333333333 microseconds
+Average time excluding first element: 16.482758620689655 microseconds
+Raw data: [21,17,16,16,17,16,16,17,17,18,16,16,16,16,17,16,17,16,16,17,16,17,
+           16,18,16,16,17,17,16,16]
+```
+

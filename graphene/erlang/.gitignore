@@ -1,0 +1,16 @@
+
+*.tar.gz
+install/
+otp_src_*/
+
+pal_loader
+
+*.manifest
+*.manifest.sgx
+*.sig
+*.token
+
+*-ldd
+*-deps
+*-trusted-libs
+
