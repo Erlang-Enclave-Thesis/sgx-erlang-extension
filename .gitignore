@@ -1,0 +1,11 @@
+*.o
+*.so
+*_u.c
+*_u.h
+*_t.c
+*_t.h
+*.swp
+*.dump
+*.beam
+*.class
+*.pem

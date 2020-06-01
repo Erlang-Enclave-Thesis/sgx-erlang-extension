@@ -1,4 +1,8 @@
-# sgx-erlang-extension
+## NOTICE:
+**We are still cleaning up this repostory for final deadline late June.**
 
-Temporary empty repostory to be filled in June with the source code for our Master's thesis about Erlang in Intel SGX.
-This work includes calling secure C code from Erlang and efforts to execute the whole BEAM runtime itself inside of SGX.
+# SGX-Erlang-extension
+
+This work was created in a Master's thesis for Chalmers University and Ericsson AB by Eliot Roxbergh and Emil Hemdal.
+It consists of prototypes for calling secure C code from Erlang, including OpenSSL, as well as efforts to execute the whole BEAM runtime itself inside of SGX.
+
