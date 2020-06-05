@@ -8,10 +8,10 @@ Clean up Makefiles and add warning about specific hardcoded settings.
 # SGX-Erlang-extension
 
 This work was created in a Master's thesis for Chalmers University together with Ericsson AB by Eliot Roxbergh and Emil Hemdal.
-It consists of prototypes for calling secure C/C++ code from Erlang, including OpenSSL, as well as efforts to execute the whole BEAM runtime itself inside of SGX. The two frameworks Graphene and SCONE were evaluted. Graphene can support Erlang only if the issue of MPMC pipes is resolved and SCONE is working on official support which at time of this project is very limited.
-For the C/C++ code parts we provide working prototypes that enable Erlang to call basic SGX-secured functions via NIF and C Nodes.
-The NIF example is also extended to include Intel SGX SSL (OpenSSL 1.1.1d) and thereby enable cryptographic functionality inside of the secure enclave.
-These three examples are also ported to run in the untrusted area as to show a basecase for performance evaluation, these can be found in _'without-sgx/'_ as well as in _'erlang-nif\_SSL'_ which hosts both untrusted and SGX versions.
+It consists of prototypes for calling secure C/C++ code from Erlang, including OpenSSL, as well as efforts to execute the whole BEAM runtime itself inside of SGX. The two frameworks Graphene and SCONE were evaluted. Graphene can _only_ support Erlang if the issue of MPMC pipes is resolved and SCONE is working on official support which at time of this project is very limited. These are provided in _'graphene/'_ and _'scone/'_, however SCONE is dependent on a proprietary docker image which we received from the SCONE team.
+For the C/C++ code parts we provide working prototypes that enable Erlang to call basic SGX-secured functions via NIF and C Nodes (_'erlang-nif' 'erlang-c-node/'_).
+The NIF example is also extended to include Intel SGX SSL (OpenSSL 1.1.1d) and thereby enable cryptographic functionality inside of the secure enclave (_'erlang-nif_SSL'_).
+These three examples are also ported to run in the untrusted area as to show a basecase for performance evaluation, and they can be found in _'without-sgx/'_ as well as in _'erlang-nif\_SSL'_ which hosts both untrusted and SGX versions.
 
 Additionally, a few basic examples were constructed to measure and compare the syscalls performed by Erlang BEAM and Java JVM, located in _'without-sgx/hello-worlds/'_.
 
