@@ -44,7 +44,6 @@ App_C_Flags := -fPIC -Wno-attributes $(App_Include_Paths)
 #App_C_Flags += -DNDEBUG -UEDEBUG -UDEBUG
 
 #App_Cpp_Flags := $(App_C_Flags)
-#App_Link_Flags := -l$(Urts_Library_Name) -lpthread
 App_Link_Flags := -lpthread
 
 # App_Cpp_Objects := $(App_Cpp_Files:.cpp=.o)

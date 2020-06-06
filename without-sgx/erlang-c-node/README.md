@@ -1,3 +1,5 @@
+Basic C Node example without SGX which supports increment and return functions.
+The very same functionlity as the SGX version allowing for comparison.
 
 # C Node
 

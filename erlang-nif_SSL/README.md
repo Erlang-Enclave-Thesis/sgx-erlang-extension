@@ -1,13 +1,17 @@
-Showcase of Erlang NIF SGX and comparison with non-SGX version.
+Extension of erlang-nif that adds support for Intel SGX SSL inside of the enclave.
+This is a simple protoype that supports the earlier increment and return functions as well as basic RSA functionality with OpenSSL.
+The prototype can either be built for SGX or run unsecured with regular OpenSSl to allow for a comparison.
 A quick and dirty prototype, we make no promises of its function or reliablilty.
 
-Tested on:
+## Setup
 
 Erlang/OTP 23 [erts-11.0] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1]
 Eshell V11.0
 
 GCC / G++ 10.1.0-2, Ubuntu 18.04,
 NUC7PJYH, DCAP 1.5 driver, SGX SDK 2.9.1
+
+Intel SGX SSL was cloned at commit 67e01f1ecc47d89e3ef6a73b0959ba5a6e61e27c (2020-04-23 for `Linux 2.9.1 SDK`, `OpenSSL 1.1.1d`)
 
 
 # NIF with SSL

@@ -1,9 +1,18 @@
-Tested on:
+A prototype which calls C/C++ code inside of SGX via a Erlang C Node.
+A very basic prototype which supports incrementing and returning a secret number in the enclave.
+This version utilizes SGX. Similar functionality without SGX is located separately in `without-sgx/`.
+A quick and dirty prototype, we make no promises of its function or reliablilty.
+
+*NOTE!* Erlang/OTP 23 no longer supports for erl\_interface.
+
+## Setup
+
 Erlang/OTP 20 [erts-9.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:10] [kernel-poll:false]
-Eshell V9.2  (abort with ^G)
+
+Eshell V9.2
+
 GCC / G++  7.5.0-3, Ubuntu 18.04, NUC7PJYH, DCAP driver
 
-NOTE! Erlang/OTP 23 no longer supports for erl\_interface. Depricated.
 
 # C Node
 

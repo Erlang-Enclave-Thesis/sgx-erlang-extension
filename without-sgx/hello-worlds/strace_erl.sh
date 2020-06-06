@@ -41,7 +41,7 @@ strace -f -c -o data/strace_erlang_helloworldthreaded.txt erl -noshell -s hello_
 strace -f -c -o data/strace_erlang_helloworldthreaded_2.txt erl -noshell -s hello_world_threaded init -s init stop
 echo
 
-#TODO this is not reliable, use awk to count lines instead
+#TODO this is not reliable! use awk to count lines instead
 let UNIQUE_CALLS=$( wc -l < data/strace_erlang_helloworldthreaded.txt  )-4
 cat data/strace_erlang_helloworldthreaded.txt
 echo "Unique syscalls: ~${UNIQUE_CALLS}"
