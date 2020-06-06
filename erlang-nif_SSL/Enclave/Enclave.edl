@@ -30,8 +30,6 @@
  *
  */
 
-/* Enclave.edl - Top EDL file. */
-
 enclave {
 
     /* Import ECALL/OCALL from sub-directory EDLs.
@@ -41,11 +39,10 @@ enclave {
      */
 
 
-    //import SGX SSL (TODO: path should be set in Makefile but I broke it)
+    // NOTE: HARDCODED PATH for import SGX SSL
+    // TODO: path should be set in Makefile but I broke it
     from "/opt/intel/sgxssl/include/sgx_tsgxssl.edl" import *;
     //from "sgx_tsgxssl.edl" import *;
-
-    //from "sgx_tstdc.edl" import *;
 
     /*
      * ocall_print_string - invokes OCALL to display string buffer inside the enclave.

@@ -30,11 +30,15 @@
 #
 #
 
+#NOTE: HARDCODED PATHS
+OPENSSL_LIBRARY_PATH := /opt/intel/sgxssl/lib64/
+OPENSSL_INCLUDES := /opt/intel/sgxssl/include/
+##
+
 SGX_SDK ?= /opt/intel/sgxsdk
 SGX_MODE ?= HW
 SGX_ARCH ?= x64
 SGX_DEBUG ?= 1
-
 
 include $(SGX_SDK)/buildenv.mk
 
@@ -45,10 +49,6 @@ SGX_EDGER8R := $(SGX_SDK)/bin/x64/sgx_edger8r
 
 SGX_SDK_INC := $(SGX_SDK)/include
 LIBCXX_INC := $(SGX_SDK)/include/libcxx
-
-OPENSSL_LIBRARY_PATH := /opt/intel/sgxssl/lib64/
-OPENSSL_INCLUDES := /opt/intel/sgxssl/include/
-
 
 
 ifeq ($(SGX_DEBUG), 1)
@@ -89,11 +89,8 @@ else
         UaeService_Library_Name := sgx_uae_service
 endif
 
-# App_Cpp_Files := $(wildcard App/EnclavedErlangCFunc/*.cpp)
 App_C_Files := App/App.c $(wildcard App/EnclavedErlangCFunc/*.c)
-#App_Include_Paths := -IApp -I$(SGX_SDK)/include
 App_Include_Paths := -IApp -I$(SGX_SDK)/include -I$(LIBCXX_INC) -I$(OPENSSL_INCLUDES)
-#App_Include_Paths := -IApp -I$(SGX_SDK)/include -I$(SGX_SDK)/include/tlibc #-I$(LIBCXX_INC) #-I$(OPENSSL_INCLUDES)
 
 App_C_Flags := -fPIC -Wno-attributes $(App_Include_Paths)
 
@@ -111,7 +108,6 @@ endif
 
 App_Cpp_Flags := $(App_C_Flags)
 
-# App_Cpp_Objects := $(App_Cpp_Files:.cpp=.o)
 App_C_Objects := $(App_C_Files:.c=.o)
 
 App_Name := app.so
@@ -128,15 +124,12 @@ endif
 Crypto_Library_Name := sgx_tcrypto
 
 Enclave_Cpp_Files := Enclave/Enclave.cpp $(wildcard Enclave/tests/*.cpp)
-#$(wildcard Enclave/EnclavedErlangCFunc/*.cpp)
 Enclave_C_Files := $(wildcard Enclave/*.c) $(wildcard Enclave/tests/*.c)
 
-#Enclave_Cpp_Objects := $(Enclave_Cpp_Files:.cpp=.o)
 Enclave_Cpp_Objects := $(sort $(Enclave_Cpp_Files:.cpp=.o))
 Enclave_C_Objects := $(Enclave_C_Files:.c=.o)
 
 
-#Common_C_Cpp_Flags := -DOS_ID=$(OS_ID) $(SGX_COMMON_CFLAGS) -nostdinc -fvisibility=hidden -fpic -fpie -fstack-protector -fno-builtin-printf -Wformat -Wformat-security $(TestEnclave_Include_Paths) -include "tsgxsslio.h"
 Enclave_Include_Paths := -IEnclave -I$(SGX_SDK)/include -I$(SGX_SDK)/include/tlibc -I$(LIBCXX_INC) -I$(OPENSSL_INCLUDES)
 
 Enclave_C_Flags := $(Enclave_Include_Paths) -include  "tsgxsslio.h" -nostdinc -fvisibility=hidden -fpie -ffunction-sections -fdata-sections $(MITIGATION_CFLAGS)

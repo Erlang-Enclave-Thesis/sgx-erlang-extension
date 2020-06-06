@@ -28,6 +28,11 @@ which could be a problem of its own...).
 
 ## Requirements and build options for SGX version
 
+*NOTE:*
+Currently, some paths are sadly hardcoded in `sgx.mk` as well as `Enclave/Enclave.edl`.
+These paths are for SGX SSL and are set to `/opt/intel/sgxssl/lib64/` `/opt/intel/sgxssl/include/` `/opt/intel/sgxssl/include/sgx\_tsgxssl.edl`.
+
+
 1. Install Intel(R) SGX SDK for Linux* OS
 2. Make sure your environment is set:
     `source ${sgx-sdk-install-path}/environment`
@@ -64,6 +69,9 @@ which could be a problem of its own...).
 
 ## Requirements and build options for non-SGX version
 
+Currently, some paths are sadly hardcoded in `no-sgx.mk`.
+These paths are for OpenSSL 1.1.1d and are set to `/home/ericsson/openssl/lib` `/home/ericsson/openssl/include`.
+
 1. Compile OpenSSL 1.1.1d into /home/ericsson/openssl
 2. Build the project with the prepare Makefile:
   a. Debug mode:
@@ -73,6 +81,7 @@ which could be a problem of its own...).
   b. Release mode:
 	$ make no-sgx SGX_DEBUG=0
 3. Remember to "make clean" before switching build mode
+
 
 
 ## Error: Please use the correct uRTS library from PSW package
