@@ -2,8 +2,6 @@
 **We are still cleaning up this repostory for final deadline late June.**
 
 TODO: add further instructions/documentation in separate `documentation/` and final thesis once complete.
-Clean up Makefiles and add warning about specific hardcoded settings.
-
 
 # SGX-Erlang-extension
 
