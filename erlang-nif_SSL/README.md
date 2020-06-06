@@ -3,6 +3,16 @@ This is a simple protoype that supports the earlier increment and return functio
 The prototype can either be built for SGX or run unsecured with regular OpenSSl to allow for a comparison.
 A quick and dirty prototype, we make no promises of its function or reliablilty.
 
+In this prototype we added support for four RSA functions via Erlang
+NIFS: generate key pair, get public key, sign data, and encrypt data. These functions
+perform calls to the C backend which communicate with the standardized OpenSSL
+api, either in untrusted space or inside of sgx.
+
+The RSA functionality created was
+based on the examples in Intel SGX SSL with the following settings; An RSA key
+length of 4096 bits is used, encryption is performed with `RSA_PKCS1_PADDING`
+and the signature uses `NID_SHA` message digest algorithm.
+
 ## Setup
 
 Erlang/OTP 23 [erts-11.0] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1]

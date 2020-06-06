@@ -33,18 +33,3 @@ Intel NUC7PJYH with SGX2 hardware support using the DCAP 1.5 driver.
 Ubuntu 18.04, SGX SDK 2.9.1, Erlang/OTP 23, GCC/G++ 10.1.0-2
 
 **Note:** Parts of erl\_interface were deprecated with the release of Erlang/OTP 23 which therefore does not support the C Node prototype, everything else we provide works fine with this release. Therefore, to use all provided functionality an earlier version can be used and the project has also been tested with Erlang/OTP 20.
-
-
-## Erlang for Graphene
-
-We worked with the Graphene community to investigate how Erlang can be supported by their framework.
-The important point we discovered with their help is the problem with MPMC pipes in Erlang as per https://github.com/Erlang-Enclave-Thesis/graphene-erlang/issues/2 .
-
-See also:
-
-https://github.com/Erlang-Enclave-Thesis/graphene-erlang/issues?q=
-
-https://github.com/oscarlab/graphene/issues/1464
-
-https://github.com/oscarlab/graphene/issues/1463
-
