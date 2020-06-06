@@ -1,10 +1,6 @@
-# Nginx manifest example
-#
-# This manifest was prepared and tested on Ubuntu 16.04.
-#
-# Nginx must be run with the pal_loader:
-#
-# ./pal_loader nginx.manifest -c conf/nginx-graphene.conf
+# This file is inspired by examples from https://github.com/oscarlab/graphene/tree/master/Examples/nginx
+# Heavily modified by Eliot Roxbergh and Emil Hemdal for Ericsson AB
+
 
 # The executable to load in Graphene.
 loader.exec = file:$(INSTALL_DIR)/lib/erlang/erts-11.0/bin/erl_child_setup
@@ -36,7 +32,7 @@ fs.mount.lib2.type = chroot
 fs.mount.lib2.path = /lib/x86_64-linux-gnu
 fs.mount.lib2.uri = file:/lib/x86_64-linux-gnu
 
-# Host-level directory to NSS files required by Glibc + NSS libs.
+# TODO is this necessary?
 fs.mount.etc.type = chroot
 fs.mount.etc.path = /etc
 fs.mount.etc.uri = file:/etc
@@ -49,8 +45,7 @@ fs.mount.cwd.uri = file:$(INSTALL_DIR)
 # SGX general options
 
 # Set the virtual memory size of the SGX enclave. For SGX v1, the enclave
-# size must be specified during signing. If Nginx needs more virtual memory
-# than the enclave size, Graphene will not be able to allocate it.
+# size must be specified during signing.
 sgx.enclave_size = 256M
 #sgx.enclave_size = 2G
 
@@ -60,8 +55,6 @@ sgx.enclave_size = 256M
 # thread for handling inter-process communication (IPC), and potentially another
 # thread for asynchronous events. Therefore, the actual number of threads that
 # the application can create is (sgx.thread_num - 2).
-#
-# We (somewhat arbitrarily) specify 4 threads since Nginx is single-threaded.
 sgx.thread_num = 4
 
 sgx.allowed_files.erl_crash_dump = file:./erl_crash.dump
@@ -77,14 +70,6 @@ sgx.trusted_files.librt = file:$(GRAPHENEDIR)/Runtime/librt.so.1
 sgx.trusted_files.libutil = file:$(GRAPHENEDIR)/Runtime/libutil.so.1
 sgx.trusted_files.libpthread = file:$(GRAPHENEDIR)/Runtime/libpthread.so.0
 
-# Name Service Switch (NSS) libraries (Glibc dependencies)
-#sgx.trusted_files.libnsscompat = file:/lib/x86_64-linux-gnu/libnss_compat.so.2
-#sgx.trusted_files.libnssfiles = file:/lib/x86_64-linux-gnu/libnss_files.so.2
-#sgx.trusted_files.libnssnis = file:/lib/x86_64-linux-gnu/libnss_nis.so.2
-
-# libNSL is a dependency of libnss_compat above
-#sgx.trusted_files.libnsl = file:/lib/x86_64-linux-gnu/libnsl.so.1
-
 # Erlang dependencies (shared libraries)
 $(ERLANG_TRUSTED_LIBS)
 
@@ -93,9 +78,3 @@ $(ERLANG_TRUSTED_LIBS)
 
 #sgx.trusted_children.beam_smp = file:./beam.smp.sig
 
-# Name Service Switch (NSS) files (Glibc reads these files)
-#sgx.allowed_files.nsswitch = file:/etc/nsswitch.conf
-#sgx.allowed_files.ethers = file:/etc/ethers
-#sgx.allowed_files.hosts = file:/etc/hosts
-#sgx.allowed_files.group = file:/etc/group
-#sgx.allowed_files.passwd = file:/etc/passwd

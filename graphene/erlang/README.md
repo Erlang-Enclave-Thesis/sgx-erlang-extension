@@ -1,13 +1,13 @@
 # Erlang
 
-Regular build:
+### Regular build:
 
-GRAPHENEDIR=/home/ericsson/graphene SGX=1 make
+`GRAPHENEDIR=/home/ericsson/graphene SGX=1 make`
 
-Debug build:
+### Debug build:
 
-GRAPHENEDIR=/home/ericsson/graphene SGX=1 DEBUG=1 make
+`GRAPHENEDIR=/home/ericsson/graphene SGX=1 DEBUG=1 make`
 
-Run after building by executing
+### Run after building by executing
 
-SGX=1 /home/ericsson/graphene/Runtime/pal_loader erlexec.manifest
+`SGX=1 /home/ericsson/graphene/Runtime/pal_loader erlexec.manifest`

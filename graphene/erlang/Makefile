@@ -1,3 +1,6 @@
+# This program is based on an example from https://github.com/oscarlab/graphene/tree/master/Examples/nginx
+# Heavily modified by Eliot Roxbergh and Emil Hemdal for Ericsson AB
+
 # Building the manifest for Erlang:
 #
 # - make                  Building for Linux
