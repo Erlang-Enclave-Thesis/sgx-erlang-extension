@@ -13,14 +13,15 @@ For the C/C++ parts we provide working prototypes that enable Erlang to call bas
 The NIF example is also extended to include Intel SGX SSL (OpenSSL 1.1.1d) and thereby enable cryptographic functionality inside of the secure enclave (`erlang-nif_SSL/`).
 These three examples are also ported to run in the regular untrusted OS as to show a basecase for performance evaluation, and they can be found in `without-sgx/` as well as in `erlang-nif_SSL/` which hosts both untrusted and SGX versions.
 
-For executing BEAM inside of SGX, the two frameworks Graphene and SCONE were evaluted. Graphene can _only_ support Erlang if the issue of MPMC pipes is resolved and SCONE is working on official support which at time of this project is very limited. These are provided in `graphene/` and `scone/`, however SCONE is dependent on a proprietary docker image (from the Scontain team) not provided here.
+For executing BEAM inside of SGX, the two frameworks Graphene and SCONE were evaluted. Graphene can only support Erlang _if_ the issue of MPMC pipes is resolved. SCONE on the other hand, is working on official support for Erlang which at time of this project is very limited.
+These efforts are provided in `graphene/` and `scone/`, however SCONE is dependent on a proprietary docker image (from the Scontain team) not provided here.
 
 Additionally, two basic examples were constructed to measure and compare the syscalls performed by Erlang BEAM and Java JVM, located in `without-sgx/hello-worlds/`.
 The evaluation results can be found in `evaluation/` which includes basic run time measurements of C/C++ prototypes as well as the results of syscall tests with strace.
 
 For the C/C++ parts it is very possible to enable different methods of attestation as we only utilize the native Intel SGX SDK functionality.
 Remote attestation with DCAP was attempted but abandoned due to other more priorities closer to our research question, these implementations are found in `attestation_abandoned/`.
-(Also, since a regular call is made to SGX any supported functionality therein should be ready to go including other supported runtimes such as Rust-SGX as long as these can communicate with the Erlang NIF or C Node.)
+Moreover, we note that it could be possible to call other ported SGX runtimes from Erlang such as Rust-SGX as long as these can communicate with the Erlang NIF or the C Node (via C code).
 
 Finally, we want to make it clear that our aim was to investigate different methods of protecting Erlang with Intel SGX and that therefore any code produced is very rudimentary and can certainly be improved. Regardless, we hope that these examples and conclusions can assist the community.
 
