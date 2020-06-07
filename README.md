@@ -2,6 +2,7 @@
 **We are still cleaning up this repostory for final deadline late June.**
 
 TODO: add further instructions/documentation in separate `documentation/` and final thesis once complete.
+The main parts are described except for theoretical parts: "Creating a Custom Layer" and "Replacing BEAM" ...
 
 # SGX-Erlang-extension
 
