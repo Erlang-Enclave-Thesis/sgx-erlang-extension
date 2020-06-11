@@ -1,12 +1,8 @@
-**tl;dr** SCONE works and can provide very basic Erlang functionality, however it requires access to their private and proprietary Docker image specifically for Erlang (_sconecuratedimages/experimental:erlang_). This image is experimental with limited Erlang functionality. It could also work to cross compile Erlang directly with the regular SCONE image, but we did not succeed with this.
-
-*The Dockerfile in this directory shows our efforts to manually cross compile Erlang for SCONE, and does not work, as described below.*
-
 # Erlang with SCONE
 
 We began with building Erlang with the SCONE cross compiler, however we got stuck with Erlang memory allocation. This implementation is found in this directory in [Dockerfile](Dockerfile).
 
-As we did not manage to build Erlang manually with the regular private SCONE image we asked to use the experimental image instead which is explained last in this readme. The Scontain team is working on adding official support for Erlang.
+As we did not manage to build Erlang manually with the regular private SCONE image, we asked to use the experimental image (_sconecuratedimages/experimental:erlang_) instead which is explained last in this readme. The Scontain team is working on adding official support for Erlang.
 
 
 ## Prequisites
