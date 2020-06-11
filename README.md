@@ -6,7 +6,7 @@ The main parts are described except for theoretical parts: "Creating a Custom La
 
 # SGX-Erlang-extension
 
-This work was created in a Master's thesis for Chalmers University together with Ericsson AB by Eliot Roxbergh and Emil Hemdal.
+This work was created in a Master's thesis for Chalmers University together with Ericsson AB by [Eliot Roxbergh](https://github.com/Eliot-Roxbergh) and [Emil Hemdal](https://github.com/emilhem).
 It consists of prototypes for calling secure C/C++ code from Erlang, including OpenSSL, as well as efforts to execute the whole BEAM runtime itself inside of SGX.
 
 For the C/C++ parts we provide working prototypes that enable Erlang to call basic SGX-secured functions via NIF and C Nodes (`erlang-nif/` an `erlang-c-node/`).

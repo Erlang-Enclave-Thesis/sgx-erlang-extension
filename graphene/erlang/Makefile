@@ -21,15 +21,15 @@ ERLANG_CHECKSUM ?= 42dcf3c721f4de59fe74ae7b65950c2174c46dc8d1dd4e27c0594d86f606a
 
 BIN_DIR ?= $(INSTALL_DIR)/lib/erlang/erts-11.0/bin
 ERLEXEC_EXECUTABLE ?= $(BIN_DIR)/erlexec
-# ERLANG_EXECUTABLES ?= $(BIN_DIR)/beam.smp $(ERLANG_MAIN_EXECUTABLE)
 BEAMSMP_EXECUTABLE ?= $(BIN_DIR)/beam.smp
 
 # Mirrors for downloading the Erlang source code
 ERLANG_MIRRORS ?= \
 	http://erlang.org/download/
 
-# Relative path to Graphene root
-GRAPHENEDIR ?= $(THIS_DIR)../..
+ifndef GRAPHENEDIR
+$(error You have to specify GRAPHENEDIR to run this makefile!)
+endif
 SGX_SIGNER_KEY ?= $(GRAPHENEDIR)/Pal/src/host/Linux-SGX/signer/enclave-key.pem
 
 ifeq ($(DEBUG),1)
