@@ -2,8 +2,30 @@
 
 # Erlang in SCONE
 
+## Prerequisites
+SCONE requires access to their private Docker Repositories. This can be
+requested from their website.
+
 ## Building
+Unfortunately the following will not work since we don't know what is not
+working when building Erlang inside of SCONE.
+```
 docker build --pull -t scone-docker-erlang .
+```
+
+The SCONE developers have an experimental SCONE Docker Erlang image available
+in their Docker repository.
+
+## Running
+Using SCONE's prebuilt Docker image for Erlang
+```
+docker pull sconecuratedimages/experimental:erlang-22.3.2
+```
+
+Running it
+```
+docker run --rm -it sconecuratedimages/experimental:erlang-22.3.2
+```
 
 ## Description
 
