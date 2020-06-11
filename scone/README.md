@@ -32,6 +32,8 @@ Run it
 docker run --rm -it sconecuratedimages/experimental:erlang-22.3.2
 ```
 
+More details at the Git repository https://github.com/scontain/erlang-examples/
+
 # Description
 
 As we had rely in prebuilt Docker images from a private repository without available
