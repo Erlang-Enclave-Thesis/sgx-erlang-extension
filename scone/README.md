@@ -16,11 +16,11 @@ As we did not manage to build Erlang manually with the regular private SCONE ima
 
 Email Scontain developers to get access to private Erlang protoype image, we received access from Christof Fetzer at Scontain.
 
-Mainly, this private docker image adds a patch to Erlang/OTP (_sys\_drivers.c_) which could be how they succeeded in building it, as well as setting configurables such as _SCONE\_HEAP_.
+Mainly, this private docker image adds a patch to Erlang/OTP (`sys_drivers.c`) which could be how they succeeded in building it, as well as setting configurables such as `SCONE_HEAP`.
 
 ## Running
 
-Using SCONE's prebuilt Docker image for Erlang
+Pulling SCONE's prebuilt Docker image for Erlang
 
 ```
 docker pull sconecuratedimages/experimental:erlang-22.3.2
