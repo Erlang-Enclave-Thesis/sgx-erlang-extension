@@ -28,8 +28,9 @@ BEAMSMP_EXECUTABLE ?= $(BIN_DIR)/beam.smp
 ERLANG_MIRRORS ?= \
 	http://erlang.org/download/
 
-# Relative path to Graphene root
-GRAPHENEDIR ?= $(THIS_DIR)../..
+ifndef GRAPHENEDIR
+$(error You have to specify GRAPHENEDIR to run this makefile!)
+endif
 SGX_SIGNER_KEY ?= $(GRAPHENEDIR)/Pal/src/host/Linux-SGX/signer/enclave-key.pem
 
 ifeq ($(DEBUG),1)
