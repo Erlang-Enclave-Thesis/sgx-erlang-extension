@@ -21,7 +21,6 @@ ERLANG_CHECKSUM ?= 42dcf3c721f4de59fe74ae7b65950c2174c46dc8d1dd4e27c0594d86f606a
 
 BIN_DIR ?= $(INSTALL_DIR)/lib/erlang/erts-11.0/bin
 ERLEXEC_EXECUTABLE ?= $(BIN_DIR)/erlexec
-# ERLANG_EXECUTABLES ?= $(BIN_DIR)/beam.smp $(ERLANG_MAIN_EXECUTABLE)
 BEAMSMP_EXECUTABLE ?= $(BIN_DIR)/beam.smp
 
 # Mirrors for downloading the Erlang source code
