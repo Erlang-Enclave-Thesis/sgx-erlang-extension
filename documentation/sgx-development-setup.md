@@ -53,12 +53,13 @@ _"Key file should follow the PEM format which contains an unencrypted RSA 3072-b
 ### Steps
 
 1. Enter a directory where you want your keys to be located.
-2. Run
-⋅⋅⋅openssl genrsa -out private_key.pem -3 3072⋅⋅
-⋅⋅⋅to generate a private RSA key.
-3. Run
-⋅⋅⋅openssl rsa -in private_key.pem -pubout -out public_key.pem⋅⋅
-⋅⋅⋅to generate the public part of the key.
+2. Run  
+   `openssl genrsa -out private_key.pem -3 3072`  
+   to generate a private RSA key.
+
+3. Run  
+   `openssl rsa -in private_key.pem -pubout -out public_key.pem`  
+   to generate the public part of the key.
 
 ### Signing stuff
 
