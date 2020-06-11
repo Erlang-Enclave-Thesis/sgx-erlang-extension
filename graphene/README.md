@@ -27,7 +27,7 @@ most of the unsupported syscalls could be ignored at the cost of performance and
 stability which was partly confirmed by Graphene.
 
 It became evident that although some syscalls could be ignored or later supported by Graphene, the main issue is BEAM's use of MPMC pipes instead of point-to-point communication in some cases.
-According to Graphene developer Dmitrii Kuvaiskii, there is no way for Graphene to determine if the pipes are used for inter-thread or inter-process communication (https://github.com/Erlang-Enclave-Thesis/graphene-erlang/issues/2).
+According to Graphene developer [Dmitrii Kuvaiskii](https://github.com/dimakuv), there is no way for Graphene to determine if the pipes are used for inter-thread or inter-process communication (https://github.com/Erlang-Enclave-Thesis/graphene-erlang/issues/2).
 As a result, Graphene chooses to TLS encrypt all pipes although he notes it could be possible to introduce a keyword in Graphene if it is certain that _all_ pipes are only used within one process and therefore not necessary to encrypt.
 The Erlang experts at Ericsson remarked that these pipes are used for two things.
 Namely, they are used to wake up schedulers sleeping in `poll/epoll/select` configured in `erl_poll.c` as well as by Erlang ports by the function `open_port({spawn,_})`.
