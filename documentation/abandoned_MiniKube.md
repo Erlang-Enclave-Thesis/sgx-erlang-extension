@@ -1,3 +1,5 @@
+**NOTE:** We never did anything with this since it was deemed out of scope for the thesis.
+
 On this page we explain what has to be done to install and enable MiniKube to work with Intel SGX.
 
 # MiniKube
@@ -41,4 +43,4 @@ sudo reboot
 ### Installing Virtualization support (KVM and QEMU) for Intel SGX
 Instructions: <https://software.intel.com/en-us/articles/virtualizing-intel-software-guard-extensions-with-kvm-and-qemu>
 
-NOTE: Use a newer tag than the one suggested in the article if it exists...? but this might install a newer kernel than needed; should be investigated.
+NOTE: Use a newer tag than the one suggested in the article if it exists...? but this might install a newer kernel than needed, should be investigated.
