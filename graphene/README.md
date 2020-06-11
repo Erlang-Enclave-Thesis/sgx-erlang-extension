@@ -1,13 +1,23 @@
-**tl;dr** this does not work, although the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
+# Erlang with Graphene
 
-# Building and Installing Graphene
+Although the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
 
-See [../documentation/graphene-setup.md](../documentation/graphene-setup.md)
+## Prequisites
 
-# Erlang for Graphene
+Get and install Graphene: [../documentation/graphene-setup.md](../documentation/graphene-setup.md)
+
+## Our Implementation
+
+See [erlang/](erlang/) and especially the Makefile therein.
+
+However, this cannot work right now due to the use of MPMC in BEAM.
+
+## Current Status
 
 We worked with the Graphene community to investigate how Erlang can be supported by their framework.
 The important point we discovered with their help, is the problem with MPMC pipes in Erlang as per <https://github.com/Erlang-Enclave-Thesis/graphene-erlang/issues/2>.
+
+There are two methods of overcoming this: either to add support in Graphene for a special keyword that promises all pipes are only used intra-process (an option in manifest like: _sgx.all_pipes_are_inside_one_process_) (sounds risky..?) OR exchange MPMC pipes in Erlang for end-to-end communication (requires changes to the BEAM runtime).
 
 See also:
 
@@ -17,7 +27,7 @@ https://github.com/oscarlab/graphene/issues/1464
 
 https://github.com/oscarlab/graphene/issues/1463
 
-## The problem with BEAM + Graphene
+## Additional Details
 
 For Graphene, most syscalls performed by beam for our hello world program (`without-sgx/hello-worlds/hello_world.erl`) are
 supported, all but 9 out of the 67 according to the Graphene documentation.
