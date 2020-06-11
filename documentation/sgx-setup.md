@@ -81,6 +81,7 @@ Run `wget` or `curl` to download the file to the NUC. Make it executable with `c
 ### Post-install steps
 
 In `.bashrc` add the below line, to persistently get access to the tools provided by sgxsdk.
+
 `source [installation-path]/sgxsdk/environment`
 
 ## SGX-OpenSSL
@@ -108,26 +109,33 @@ If you need Open Enclave this will explain how to get it to work.
 <https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/install_oe_sdk-Ubuntu_18.04.md>
 
 ### Post-install steps
+
 In .bashrc add the below line, to persistently get access to the tools provided by open-enclave.
+
 `source /opt/openenclave/share/openenclave/openenclaverc`
 
 ## Testing Intel SGX
 
 Confirming that Intel SGX is installed and working is a crucial step before beginning to develop software on the platform.
 
-### Open Enclave
-
-**Prerequisites:** Open Enclave installed
-
-<https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/Linux_using_oe_sdk.md#samples>
-
-**Comment:** We had some issues with the samples remote_attestation and attested_tls
 
 ### Intel SGX SDK
 
 **Prerequisites:** Intel SGX SDK installed
 
+**Comment:** We had some issues with the samples for Switchless
+
 Enter the intel sgx sdk (sgxsdk) directory. Enter the SampleCode directory. Run the samples.
 
-**Comment:** We had some issues with the samples for Switchless
+
+### Open Enclave
+
+**Prerequisites:** Open Enclave installed
+
+**Comment:** We had some issues with the samples remote_attestation and attested_tls
+
+Try the OpenEnclave samples (if OpenEnclave is used, we did not really use it!)
+
+<https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/Linux_using_oe_sdk.md#samples>
+
 
