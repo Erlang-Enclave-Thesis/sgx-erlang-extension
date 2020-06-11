@@ -7,9 +7,9 @@ As we did not manage to build Erlang manually with the regular private SCONE ima
 
 ## Prequisites
 
-Get and install SCONE: [../documentation/scone-setup.md](../documentation/scone-setup.md),
+Get and install SCONE: [../documentation/scone-setup.md](../documentation/scone-setup.md)
 
-Also see their documentation: <https://sconedocs.github.io>
+Can also read their documentation: <https://sconedocs.github.io>
 
 ## Cross compiling Erlang for SCONE 
 
