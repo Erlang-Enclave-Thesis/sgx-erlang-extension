@@ -31,7 +31,7 @@ docker run --rm -it sconecuratedimages/experimental:erlang-22.3.2
 
 As we had rely in prebuilt Docker images from a private repository without available
 source code, most work we did on SCONE is based on personal communications with
-the their team and especially Christof Fetzer.
+the their team and especially [Christof Fetzer](https://github.com/christoffetzer).
 First, a request had to be made to
 the Scontain team to acquire access to their Docker images. Access was granted and
 a Dockerfile was created that utilized their SCONE crosscompiler image to compile
