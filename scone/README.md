@@ -1,33 +1,38 @@
-**tl;dr** this works and can provide very basic Erlang functionality, however it requires access to the private and proprietary Docker image from SCONE.
+**tl;dr** SCONE works and can provide very basic Erlang functionality, however it requires access to their private and proprietary Docker image (_sconecuratedimages/experimental:erlang_).
 
-# Erlang in SCONE
+*The Dockerfile in this directory shows our efforts to manually build Erlang for SCONE, and does not work, as described in the first chapter below!*
+
+# Our Initial Efforts for SCONE
+
+We began with building Erlang with the SCONE cross compiler, however we got stuck with Erlang memory allocation (super carrier).
+Some of these steps are mentioned here: [../documentation/scone-setup.md](../documentation/scone-setup.md), see also the related [Dockerfile](Dockerfile).
+
+As we did not manage to build Erlang manually with the regular private SCONE image we asked to use the experimental image instead which is explained below.
+
+
+# Using Experimental Erlang Docker Image
 
 ## Prerequisites
-SCONE requires access to their private Docker Repositories. This can be
-requested from their website.
 
-## Building
-Unfortunately the following will not work since we don't know what is not
-working when building Erlang inside of SCONE.
-```
-docker build --pull -t scone-docker-erlang .
-```
+Email Scontain developers to get access to private Erlang protoype image, we received access from Christof Fetzer at Scontain.
 
-The SCONE developers have an experimental SCONE Docker Erlang image available
-in their Docker repository.
+Mainly, this private docker image adds a patch to Erlang/OTP (_sys\_drivers.c_) which could be how they succeeded in building it, as well as setting configurables such as _SCONE\_HEAP_.
 
 ## Running
+
 Using SCONE's prebuilt Docker image for Erlang
+
 ```
 docker pull sconecuratedimages/experimental:erlang-22.3.2
 ```
 
-Running it
+Run it
+
 ```
 docker run --rm -it sconecuratedimages/experimental:erlang-22.3.2
 ```
 
-## Description
+# Description
 
 As we had rely in prebuilt Docker images from a private repository without available
 source code, most work we did on SCONE is based on personal communications with

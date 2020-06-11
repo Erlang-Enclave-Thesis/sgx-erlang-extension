@@ -1,5 +1,9 @@
 **tl;dr** this does not work, although the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
 
+# Building and Installing Graphene
+
+See [../documentation/graphene-setup.md](../documentation/graphene-setup.md)
+
 # Erlang for Graphene
 
 We worked with the Graphene community to investigate how Erlang can be supported by their framework.
