@@ -1,4 +1,20 @@
 
+#
+# Docker Graphene Proof of Concept
+#
+# Copyright (c) 2020, Eliot Roxbergh and Emil Hemdal for Ericsson AB
+# All rights reserved.
+#
+# NOTE: This Dockerfile was only used for a proof of concept testing to build
+# Graphene in a Docker environment which could be useful on some systems. It
+# was not really used in our thesis other than as a playground when building
+# Graphene.
+#
+# This file was fully created by us and is therefore safely licensed under the
+# BSD 3-Clause License
+#
+#
+
 FROM ubuntu:18.04 AS buildenv
 
 RUN apt update && apt dist-upgrade -y
