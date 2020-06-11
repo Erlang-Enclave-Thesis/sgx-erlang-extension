@@ -5,10 +5,11 @@
 
 **TODO:** We could add summary of theoretical parts: "Creating a Custom Layer" and "Replacing BEAM". Additionally, conclusions or abstract could be mentioned. But all this is to be found in the thesis.
 
-# SGX-Erlang-extension
+# Erlang-SGX
 
 This work was created in a Master's thesis for Chalmers University together with Ericsson AB by [Eliot Roxbergh](https://github.com/Eliot-Roxbergh) and [Emil Hemdal](https://github.com/emilhem).
-It consists of prototypes for calling secure C/C++ code from Erlang, including OpenSSL, as well as efforts to execute the whole BEAM runtime itself inside of SGX.
+Here we explore several methods of protecting Erlang workloads with Intel SGX secure enclaves.
+The practical parts consist of prototypes for calling C/C++ code in SGX from Erlang, which includes OpenSSL functionality, as well as efforts to execute the whole BEAM runtime itself inside of SGX.
 Details of the initial setup and configuration can be found in (`documentation/`).
 
 For the C/C++ parts we provide working prototypes that enable Erlang to call basic SGX-secured functions via NIF and C Nodes (`erlang-nif/` an `erlang-c-node/`).
