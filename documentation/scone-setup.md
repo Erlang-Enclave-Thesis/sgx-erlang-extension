@@ -42,9 +42,9 @@ Go to Scone's website and request community/evaluation access
 
 Get Erlang into enclave (won't build yet)
 
-Acquire our Dockerfile from this [repo](../scone/Dockerfile).
+Use our [Dockerfile](../scone/Dockerfile).
 
-Run the following in the folder where the Dockerfile is located. Probably best if the directory is otherwise empty
+Run the following in the [folder](../scone) where the Dockerfile is located. Probably best if the directory is otherwise empty
 
 `docker build --pull -t scone-docker-erlang .`
 
