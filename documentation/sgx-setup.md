@@ -1,6 +1,6 @@
 On this page we explain what has to be done in order to enable SGX support on a supported Intel NUC.
 
-#Initial requirements
+# Initial requirements
 Add the repository from Intel by running
 
 ```
@@ -24,7 +24,7 @@ Not sure if needed, but Intel mentions a _sgx\_prv_ group that the user of encla
 
 ## Install DCAP and PSW (platform software) runtime packages
 
-These packages will be used when developing/running software for/on SGX DCAP.
+These packages will be used when developing/running software on SGX DCAP.
 
 ### Prerequisites
 
@@ -32,7 +32,11 @@ Install the DCAP driver first.
 
 ### Installation
 
-`sudo apt update && sudo apt install libsgx-urts libsgx-dcap-ql libsgx-dcap-ql-dev libsgx-dcap-default-qpl libsgx-dcap-default-qpl-dev -y`
+```
+sudo apt update
+sudo apt install -y libsgx-urts libsgx-dcap-ql libsgx-dcap-ql-dev \
+                 libsgx-dcap-default-qpl libsgx-dcap-default-qpl-dev
+```
 
 ## Installing SGX PCCS (Provisioning Certificate Caching Service)
 
@@ -98,10 +102,10 @@ sudo make install #copies stuff to  /opt/intel/sgxssl/
 If you need Open Enclave this will explain how to get it to work.
 
 ### Installation
-**Step 2** should already be completed from "Installing DCAP SGX driver” step.
+**Prerequisites:** Step 2 should already be completed from "Installing DCAP SGX driver” step.
 
-Follow instructions here:
-<https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/install_oe_sdk-Ubuntu_18.04.md
+**Follow instructions here:**
+<https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/install_oe_sdk-Ubuntu_18.04.md>
 
 ### Post-install steps
 In .bashrc add the below line, to persistently get access to the tools provided by open-enclave.
@@ -113,17 +117,17 @@ Confirming that Intel SGX is installed and working is a crucial step before begi
 
 ### Open Enclave
 
-Prerequisites: Open Enclave installed
+**Prerequisites:** Open Enclave installed
 
 <https://github.com/openenclave/openenclave/blob/master/docs/GettingStartedDocs/Linux_using_oe_sdk.md#samples>
 
-Comment: We had some issues with the samples remote_attestation and attested_tls
+**Comment:** We had some issues with the samples remote_attestation and attested_tls
 
 ### Intel SGX SDK
 
-Prerequisites: Intel SGX SDK installed
+**Prerequisites:** Intel SGX SDK installed
 
 Enter the intel sgx sdk (sgxsdk) directory. Enter the SampleCode directory. Run the samples.
 
-Comment: We had some issues with the samples for Switchless
+**Comment:** We had some issues with the samples for Switchless
 
