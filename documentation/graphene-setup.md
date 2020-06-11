@@ -1,7 +1,5 @@
 Graphene is an application wrapper to make software run in enclaves, which seem to get a lot of support from Intel.
 
-**NOTE: Graphene currently only supports DCAP 1.5.** See issue: <https://github.com/oscarlab/graphene-sgx-driver/issues/15>
-
 You should already have a system with the SGX driver installed before continuing with this guide.
 
 # Prerequisites
@@ -36,7 +34,7 @@ Remember to give it the path to the SGXDataCenterAttestationPrimitives that you 
 
 Try to use the official guide here: <https://graphene.readthedocs.io/en/latest/building.html>
 
-Although we've condensed the steps below:
+Although we have condensed the steps below:
 
 Install the build tools by executing the following
 ```
