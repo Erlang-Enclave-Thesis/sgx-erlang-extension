@@ -1,8 +1,9 @@
 ## NOTICE:
 **We are still cleaning up this repostory for final deadline late June.**
 
-TODO: Add final thesis once complete.
-TODO: Could add summary of theoretical parts: "Creating a Custom Layer" and "Replacing BEAM"
+**TODO:** Add final thesis once complete.
+
+**TODO:** We could add summary of theoretical parts: "Creating a Custom Layer" and "Replacing BEAM". Additionally, conclusions or abstract could be mentioned. But all this is to be found in the thesis.
 
 # SGX-Erlang-extension
 
