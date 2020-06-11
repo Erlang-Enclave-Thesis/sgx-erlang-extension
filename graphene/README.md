@@ -1,4 +1,4 @@
-**tl;dr** this does not work, althought the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
+**tl;dr** this does not work, although the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
 
 # Erlang for Graphene
 
