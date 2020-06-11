@@ -1,6 +1,6 @@
 # Hardware
 
-Intel NUC NUC7PJYH
+Intel NUC NUC7PJYH (supports SGX2)
 
 Kingston 8GB DDR4 RAM (KVR24S17S8/8)
 
@@ -14,4 +14,20 @@ Other than Secure Boot, no changes were made in the BIOS.
 
 ## Operating System
 
-Ubuntu 18.04 LTS 64 bit was picked because of its good support.
+Ubuntu 18.04 LTS 64 bit was picked as recommended by Intel.
+
+### Software
+
+A number of different software versions were used, the last setup was:
+
+DCAP 1.5 driver. 
+
+Ubuntu 18.04, SGX SDK 2.9.1, Erlang/OTP 23, GCC/G++ 10.1.0-2
+
+**Other versions installed previously:**
+
+DCAP 1.4 and 1.6
+
+Erlang/OTP 20
+
+GCC 8.3
