@@ -4,6 +4,8 @@ We've only built a standard version of Erlang/OTP.
 With the default settings (can add flags to ./configure), there was no support for jinterface, odbc, wx, and the Erlang/OTP documentation is not included - in our case.
 Note, what is included in this build processes changes according to what dependencies are available on the system with ./configure.
 
+Erlang/OTP is also available in most repositories but this gives you less choice and older versions, Erlang is easy to build.
+
 **Future work:** here it could be investigated what build options are available to e.g. lessen the syscalls performed or to lessen the size of the Erlang runtime (which could be ported to SGX enclaves).
 
 ## Prerequisites
@@ -26,7 +28,7 @@ sudo make install
 
 You should now have Erlang/OTP installed.
 
-**HOWEVER!** When building manually instead of installing from repo, EPMD does not seem to start, which is required for C Node and external communication!
+**HOWEVER!** When building manually instead of installing from repo, EPMD does not seem to start, which is required for C Node and other external communication!
 
 # Enable EPMD service
 
