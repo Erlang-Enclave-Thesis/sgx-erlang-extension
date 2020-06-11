@@ -58,7 +58,7 @@ to enable and start the service.
 
 ## Try Erlang C-Node
 
-In the [erlang-c-node] directory you can run _make_ to build the project.
+In the [../erlang-c-node](../erlang-c-node) directory you can run _make_ to build the project.
 
 Start the application in one terminal running
 
