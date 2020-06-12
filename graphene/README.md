@@ -6,7 +6,7 @@ We also provide a Dockerfile to build Graphene itself in Docker.
 
 Although the vital syscalls seems to be supported in Graphene, the use of MPMC in BEAM hinders Graphene support!
 
-## Prequisites
+## Prerequisites
 
 Install Graphene. This can be done as per our instructions in [../documentation/graphene-setup.md](../documentation/graphene-setup.md),
 or by using our [Dockerfile](building-graphene/Dockerfile) to build in Docker.
