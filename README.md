@@ -35,4 +35,27 @@ Intel NUC7PJYH with SGX2 hardware support using the DCAP 1.5 driver.
 
 Ubuntu 18.04, SGX SDK 2.9.1, Erlang/OTP 23, GCC/G++ 10.1.0-2
 
-**Note:** Parts of erl\_interface were deprecated with the release of Erlang/OTP 23 which therefore does not support the C Node prototype, everything else we provide works fine with this release. Therefore, to use all provided functionality an earlier version can be used and the project has also been tested with Erlang/OTP 20.
+**Note:** Parts of erl\_interface were deprecated with the release of Erlang/OTP 23 which therefore does not support the C Node prototype, everything else we provide works fine with this release. Therefore, to use all provided functionality an earlier version can be used and the project has also been tested with Erlang/OTP 20 and 22.
+
+
+## Usefulness of Erlang SGX
+
+The idea with this project was to provide security benefits to Erlang, while supporting legacy codebases.
+We propose two different methods by which we can achieve this;
+
+1. Replace NIFs used in BEAM with SGX versions. For instance, the NIFs used in the _crypto_ library under the hood could be replaced to provide hardened crypto functions seamlessly for current Erlang applications. This could also enable confidentiality of the C binaries in SGX. Here the overhead is small, _without_ optimizations our NIFs had an overhead of between 30 and 250 microseconds depending on context switches. This should be very doable as we presented a minimum viable product here.
+
+2. Run Erlang code itself in SGX. This could be achieved in a number of ways (future work...), and would protect legacy Erlang applications. Although, security and performance need to be evaluated.
+
+
+## Future Work Ideas
+
+#### BEAM SGX
+
+1. Compile BEAM to another target, such as WebAssembly and run in SGX.. can we use [Lumen](https://github.com/lumen/lumen)?
+
+2. If BEAM is to be used, a first step could be to examinate each syscall performed by BEAM (67 unique syscalls for '_hello world_'). Thereby, we could determine which calls could be ignored, resolved internally in SGX, or forwarded out to OS if absolutely necessary. Remember a vast majority of calls performed are made from the BEAM scheduler and could be ignored at a performance cost. It is also possible to tweak build options to lessen these calls, but BEAM was not really built with this in mind so this needs to be investigated further in that case. Thereafter, the dream solution involve a custom layer specifically optimized for BEAM according to its syscalls.
+
+3. MPMC pipe use in BEAM is a big hurdle for Graphene. We are not quite sure if this could effect other frameworks as well, are these pipes only used intra-process? In SGX we ideally want end-to-end communication and encryption just to be sure nothing leaks during external communication.
+
+
