@@ -1,6 +1,6 @@
 # Hardware
 
-Intel NUC NUC7PJYH (supports SGX2)
+Intel NUC NUC7PJYH (supports SGX2 and DCAP)
 
 Kingston 8GB DDR4 RAM (KVR24S17S8/8)
 
@@ -8,7 +8,7 @@ Samsung 860 EVO (MZ-76E500B)
 
 ## NUC BIOS
 
-Disabling Secure Boot can be helpful if you can't get custom drivers (such as the SGX driver) signed.
+Disabling Secure Boot can be helpful if you cannot get custom drivers (such as the SGX driver) signed.
 
 Other than Secure Boot, no changes were made in the BIOS.
 
