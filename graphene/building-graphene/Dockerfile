@@ -31,7 +31,7 @@
 #
 
 
-# Docker Graphene Proof of Concept
+# Build Graphene in Docker
 #
 # This Dockerfile was only used for a proof of concept testing to build
 # Graphene in a Docker environment which could be useful on some systems. It

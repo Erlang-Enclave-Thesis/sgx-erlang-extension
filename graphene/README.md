@@ -1,16 +1,31 @@
+
 # Erlang with Graphene
 
-Although the vital syscalls seems to be supported in Graphene the use of MPMC in BEAM hinders Graphene support.
+The files in this directory shows our progress with BEAM in Graphene, buildable with the Makefile.
+We also provide a Dockerfile to build Graphene itself in Docker.
+
+Although the vital syscalls seems to be supported in Graphene, the use of MPMC in BEAM hinders Graphene support!
 
 ## Prequisites
 
-Get and install Graphene: [../documentation/graphene-setup.md](../documentation/graphene-setup.md)
+Install Graphene. This can be done as per our instructions in [../documentation/graphene-setup.md](../documentation/graphene-setup.md),
+or by using our [Dockerfile](building-graphene/Dockerfile) to build in Docker.
+When testing Graphene we built it by the first method, without Docker.
 
 ## Our Implementation
 
-See [erlang/](erlang/) and especially the Makefile therein.
+#### Regular build
 
-However, this cannot work right now due to the use of MPMC in BEAM.
+`GRAPHENEDIR=/home/ericsson/graphene SGX=1 make`
+
+#### Debug build
+
+`GRAPHENEDIR=/home/ericsson/graphene SGX=1 DEBUG=1 make`
+
+#### Run after building
+
+`SGX=1 /home/ericsson/graphene/Runtime/pal_loader erlexec.manifest`
+
 
 ## Current Status
 
@@ -46,5 +61,4 @@ As a result, Graphene chooses to TLS encrypt all pipes although he notes it coul
 The Erlang experts at Ericsson remarked that these pipes are used for two things.
 Namely, they are used to wake up schedulers sleeping in `poll/epoll/select` configured in `erl_poll.c` as well as by Erlang ports by the function `open_port({spawn,_})`.
 The later uses UNIX domain sockets and pipes to create child processes such as `intel_gethost` and modification of this feature would require much more work in `sys_drivers.c`.
-
 

@@ -32,9 +32,18 @@ Remember to give it the path to the SGXDataCenterAttestationPrimitives that you 
 
 # Installation
 
-Try to use the official guide here: <https://graphene.readthedocs.io/en/latest/building.html>
+We provide two methods of building Graphene, in Docker and directly on the system.
+For this project we chose the latter to build Graphene as regular, directly on the NUC.
 
-Although we have condensed the steps below:
+## In Docker
+
+Buildable in Docker with our [Dockerfile](../graphene/building-graphene/Dockerfile)
+
+## Regular Build
+
+It is recommended follow the updated official guide here: <https://graphene.readthedocs.io/en/latest/building.html>
+
+### Condensed Steps 
 
 Install the build tools by executing the following
 ```
@@ -56,3 +65,5 @@ Then to begin the building process, run
 make SGX=1
 ```
 Depending on if you have installed the graphene driver or not it might ask for the path to the _SGXDataCenterAttestationPrimitives_ repo you cloned earlier. Provide it with the absolute path to the _driver/linux_ directory of the repository and it will be happy.
+
+
