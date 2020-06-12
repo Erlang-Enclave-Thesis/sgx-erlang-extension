@@ -1,9 +1,9 @@
 On this page we explain how to set up a development environment for Intel SGX.
 
-Installing the development parts of the SGX platform on your local machine enables you to compile and simulate SGX software.
+This consists of two parts.
+First to create a local SGX simulation environment, this also supports debugging with Eclipse.
+Second is to generate signing keys necessary for running `Enclave.so` in release mode.
 
-
-**Prerequisites:** Working Intel SGX system.
 
 # Local Simulation Environment
 
@@ -18,13 +18,18 @@ Install Intel SDK <https://download.01.org/intel-sgx/latest/dcap-latest/linux/di
 
 Then source ~/Downloads/sgx (e.g. add to .bashrc)
 
+
+## Eclipse Plugin
+
 Install Eclipse ("For C/C++ developers") -> Download: <https://www.eclipse.org/downloads/>
 
 Add SGX plugin to Eclipse ("Add new software.." in eclipse) -> Download: <https://01.org/intel-software-guard-extensions/downloads>
 
-Now we're ready to run it.
+Now we're ready to run enclaved code in simulation mode which we can debug from Eclipse.
 
-Start eclipse and open the project (e.g. _sgx-erlang-extension/erlang-c-node_), build it in eclipse, make sure _enclave\_communicator.erl_ contains your hostname (@...).
+### Verifying Functionality with C Node
+
+Start eclipse and open the project (e.g. _sgx-erlang-extension/erlang-c-node_), build it in Eclipse, make sure _enclave\_communicator.erl_ contains your hostname (@...).
 
 Go to the path, set secret cookie and start Erlang. You may now use the program!
 
@@ -42,7 +47,7 @@ Linux 5.3.0-46-generic #38~18.04.1-Ubuntu SMP Tue Mar 31 04:17:56 UTC 2020 x86_6
 Erlang/OTP 22 [erts-10.6] [source] [64-bit] [smp:4:4] [ds:4:4:10] Eshell V10.6
 ```
 
-## Keys
+# Create Key Pair for Signing
 
 To develop applications for Intel SGX you will eventually need signing keys. Note that the keys we generate here are not meant for actual deployment since these keys should be kept much more secure than your development machine.
 
@@ -50,7 +55,7 @@ Reference regarding keys and signing: [Intel SGX Docs](https://download.01.org/i
 
 _"Key file should follow the PEM format which contains an unencrypted RSA 3072-bit key. The public exponent must be 3."_ - Developer Reference
 
-### Steps
+## Steps
 
 1. Enter a directory where you want your keys to be located.
 2. Run  
@@ -61,9 +66,9 @@ _"Key file should follow the PEM format which contains an unencrypted RSA 3072-b
    `openssl rsa -in private_key.pem -pubout -out public_key.pem`  
    to generate the public part of the key.
 
-### Signing stuff
+### Signing the Enclave
 
-Signing enclaves should be performed by the _sgx\_sign_ utility.
+The signing enclaves should be performed by the _sgx\_sign_ utility.
 
 Sign enclave.so file you wish to run in release mode, e.g.:
 ```
@@ -73,4 +78,5 @@ make SGX_DEBUG=0
 
 # PCCS Admin Tools
 
-In the DCAP repository there is a directory called `tools/PccsAdminTool`. Here a file `pccsadmin.py` is located.
+For handling certificates for DCAP, take a look at PCCS admin tools.
+This is located in the DCAP repository `tools/PccsAdminTool`, with the script `pccsadmin.py`.
