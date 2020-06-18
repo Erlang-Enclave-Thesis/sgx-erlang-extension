@@ -56,6 +56,8 @@ We propose two different methods by which we can achieve this;
 
 2. If BEAM is to be used, a first step could be to examinate each syscall performed by BEAM (67 unique syscalls for '_hello world_'). Thereby, we could determine which calls could be ignored, resolved internally in SGX, or forwarded out to OS if absolutely necessary. Remember, a vast majority of calls performed are made from the BEAM scheduler and could be ignored at a performance cost. It is also possible to tweak build options to lessen these calls, but BEAM was not really built with this in mind so this needs to be investigated further in that case. Thereafter, the dream solution involves a custom layer specifically optimized for BEAM according to these syscalls. Then, to possibly, statically preload modules to lessen initial IO by BEAM and memory-mapped IO for improved performance.
 
-3. MPMC pipe use in BEAM is a big hurdle for Graphene. We are not quite sure if this could effect other frameworks as well, are these pipes only used intra-process? In SGX we ideally want end-to-end communication and encryption just to be sure nothing leaks during external communication.
+   Build options which could reduce number of syscalls: by increasing `ETHR_YIELD_AFTER_BUSY_LOOPS` or by setting `+sbwt none +sbwtdcpu none +sbwtdio none` (explained [here](https://stressgrid.com/blog/beam_cpu_usage/)). More information can be read out with [microstate accounting](https://erlang.org/doc/man/msacc.html) ([API](https://erlang.org/doc/man/erlang.html#statistics_microstate_accounting)).
+
+3. MPMC pipe use in BEAM is a big hurdle for Graphene. We are not quite sure if this could effect other frameworks as well, are these pipes only used intra-process? In SGX we ideally want end-to-end communication and encryption just to be sure nothing leaks during external communication. Therefore, it could be an important feature to fix in BEAM.
 
 
