@@ -34,12 +34,13 @@ Ubuntu 18.04, SGX SDK 2.9.1, Erlang/OTP 23, GCC/G++ 10.1.0-2
 
 ## Usefulness of Erlang SGX
 
-The idea with this project was to provide security benefits to Erlang, while supporting legacy codebases.
-We propose two different methods by which we can achieve this;
+
+The idea is to provide security benefits to Erlang, while supporting legacy codebases.
+We propose two different methods (according to our use cases) by which we can achieve this;
 
 1. Replace NIFs used in BEAM with SGX versions. For instance, the NIFs used in the _crypto_ library under the hood could be replaced to provide hardened crypto functions seamlessly for current Erlang applications. This could also enable confidentiality of the C binaries in SGX. Here the overhead is small, _without_ optimizations our NIFs had an overhead of between 30 and 250 microseconds depending on context switches. This should be very doable as we presented a minimum viable product here.
 
-2. Run Erlang code itself in SGX. This could be achieved in a number of ways (future work...), and would protect legacy Erlang applications. Although, security and performance need to be evaluated.
+2. Run Erlang code itself in SGX. This could be achieved in a number of ways (frameworks, custom solution, etc.) to protect legacy Erlang applications. Although, security and performance need to be evaluated.
 
 
 ## Future Work Ideas
@@ -50,7 +51,7 @@ We propose two different methods by which we can achieve this;
 
 2. If BEAM is to be used, a first step could be to examinate each syscall performed by BEAM (67 unique syscalls for '_hello world_'). Thereby, we could determine which calls could be ignored, resolved internally in SGX, or forwarded out to OS if absolutely necessary. Remember, a vast majority of calls performed are made from the BEAM scheduler and could be ignored at a performance cost. It is also possible to tweak build options to lessen these calls, but BEAM was not really built with this in mind so this needs to be investigated further in that case. Thereafter, the dream solution involves a custom layer specifically optimized for BEAM according to these syscalls. Then, to possibly, statically preload modules to lessen initial IO by BEAM and memory-mapped IO for improved performance (quickly mentioned in the thesis)
 
-   Build options which could reduce number of syscalls: by increasing `ETHR_YIELD_AFTER_BUSY_LOOPS` or by setting `+sbwt none +sbwtdcpu none +sbwtdio none` (explained [here](https://stressgrid.com/blog/beam_cpu_usage/)). More information can be read out with [microstate accounting](https://erlang.org/doc/man/msacc.html) ([API](https://erlang.org/doc/man/erlang.html#statistics_microstate_accounting)).
+   Build options could reduce number of syscalls: by increasing `ETHR_YIELD_AFTER_BUSY_LOOPS` or by setting `+sbwt none +sbwtdcpu none +sbwtdio none` (explained [here](https://stressgrid.com/blog/beam_cpu_usage/)). More information of the Erlang execution can be read out with [microstate accounting](https://erlang.org/doc/man/msacc.html) ([API](https://erlang.org/doc/man/erlang.html#statistics_microstate_accounting)). It could be possible to investigate the performance and any potential bottlenecks with SGX, earlier work includes [sgx-perf](https://github.com/ibr-ds/sgx-perf).
 
 3. MPMC pipe use in BEAM is a big hurdle for Graphene. We are not quite sure if this could effect other frameworks as well, are these pipes only used intra-process? In SGX we ideally want end-to-end communication and encryption just to be sure nothing leaks during external communication. Therefore, it could be an important feature to fix in BEAM.
 
